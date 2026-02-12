@@ -1,7 +1,10 @@
 import streamlit as st
 import feedparser
-from google import genai
+import google.generativeai as genai
 import re
+
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 # =========================
 # 記事解析関数
@@ -42,13 +45,6 @@ st.set_page_config(
 
 st.title("📝 NOTE記事ジェネレーター")
 st.caption("ニュース選択 → NOTE記事生成（API節約設計）")
-
-# =========================
-# Gemini クライアント
-# =========================
-client = genai.Client(
-    api_key=st.secrets["GEMINI_API_KEY"]
-)
 
 # =========================
 # RSS 定義
@@ -187,13 +183,10 @@ NOTE向け記事を1本作成してください。
 """
 
 
-            client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
-
             with st.spinner("NOTE記事を生成中…"):
-                response = client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=prompt
-                )
+                response = model.generate_content(prompt)
+                text = response.text
+
 
             article = response.text
             st.session_state["article"] = article
