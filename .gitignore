@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environments
+.env
+.venv/
+venv/
+miniconda/
+envs/
+Lib/
+
+# Streamlit
+.streamlit/cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+.streamlit/secrets.toml
+credentials.json
+token.json
